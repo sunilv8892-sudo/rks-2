@@ -234,6 +234,45 @@ const revealHero = () => {
     window.addEventListener(eventName, revealHero, { passive: true, once: true });
 });
 
+// ========== MOBILE VIDEO DEFER + PLAY BUTTON ==========
+const heroVideo = document.querySelector('.hero-video');
+const heroPoster = document.querySelector('.hero-poster');
+const playBtn = document.querySelector('.hero-play');
+
+const mobileQuery = window.matchMedia('(max-width: 768px)');
+function setupMobileVideo() {
+    if (mobileQuery.matches) {
+        if (heroVideo) {
+            try { heroVideo.pause(); } catch (e) {}
+            heroVideo.preload = 'metadata';
+            heroVideo.style.display = 'none';
+        }
+        if (heroPoster) heroPoster.style.display = 'flex';
+    } else {
+        if (heroVideo) {
+            heroVideo.preload = 'auto';
+            heroVideo.style.display = 'block';
+        }
+        if (heroPoster) heroPoster.style.display = 'none';
+    }
+}
+setupMobileVideo();
+if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', setupMobileVideo);
+else mobileQuery.addListener(setupMobileVideo);
+
+if (playBtn) {
+    playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        revealHero();
+        if (heroPoster) heroPoster.style.display = 'none';
+        if (heroVideo) {
+            heroVideo.style.display = 'block';
+            const p = heroVideo.play();
+            if (p && p.catch) p.catch(() => {});
+        }
+    });
+}
+
 // ========== ADVANCED 3D CARD EFFECTS ==========
 document.querySelectorAll('.service-card, .testimonial-card, .feature-item').forEach(card => {
     card.addEventListener('mousemove', (e) => {
