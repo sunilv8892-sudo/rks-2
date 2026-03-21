@@ -219,25 +219,20 @@ document.querySelectorAll('.service-card, .gallery-item, .testimonial-card, .fea
 
 // ========== NAVBAR INTELLIGENCE ==========
 const navbar = document.querySelector('.navbar');
-let lastScrollY = 0;
+if (navbar) {
+    navbar.style.background = 'rgba(10, 24, 15, 0.12)';
+    navbar.style.backdropFilter = 'blur(10px)';
+    navbar.style.boxShadow = 'none';
+}
 
-window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    
-    if (scrollY > 100) {
-        navbar.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.3)';
-        navbar.style.backdropFilter = 'blur(20px)';
-        if (scrollY > lastScrollY) {
-            navbar.style.transform = 'translateY(-100%)';
-        } else {
-            navbar.style.transform = 'translateY(0)';
-        }
-    } else {
-        navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
-        navbar.style.transform = 'translateY(0)';
-    }
-    lastScrollY = scrollY;
-}, { passive: true });
+// ========== HERO REVEAL ON USER ACTION ==========
+const revealHero = () => {
+    document.body.classList.add('hero-revealed');
+};
+
+['pointermove', 'mousemove', 'click', 'scroll', 'touchstart', 'keydown'].forEach((eventName) => {
+    window.addEventListener(eventName, revealHero, { passive: true, once: true });
+});
 
 // ========== ADVANCED 3D CARD EFFECTS ==========
 document.querySelectorAll('.service-card, .testimonial-card, .feature-item').forEach(card => {
@@ -323,17 +318,7 @@ document.querySelectorAll('section').forEach((section, idx) => {
 // ========== HERO SECTION EFFECTS ==========
 const heroTitle = document.querySelector('.hero-title');
 if (heroTitle) {
-    const text = heroTitle.textContent;
-    heroTitle.textContent = '';
-    heroTitle.style.animation = 'none';
-    
-    text.split('').forEach((char, i) => {
-        const span = document.createElement('span');
-        span.textContent = char;
-        span.style.opacity = '0';
-        span.style.animation = `fadeInUp 0.5s ease-out ${i * 0.03}s forwards`;
-        heroTitle.appendChild(span);
-    });
+    heroTitle.style.animation = 'slideInRight 0.8s ease-out';
 }
 
 // ========== SHAPE MORPHING ==========
@@ -522,7 +507,6 @@ window.addEventListener('scroll', () => {
     const heroContent = document.querySelector('.hero-content');
     if (heroContent && scrollY < window.innerHeight) {
         heroContent.style.opacity = Math.max(0, 1 - scrollY / window.innerHeight);
-        heroContent.style.transform = `translateY(${scrollY * 0.5}px)`;
     }
 }, { passive: true });
 
@@ -578,4 +562,4 @@ window.addEventListener('scroll', () => {
     document.body.style.backgroundPosition = `${scrollPercent}% 0%`;
 }, { passive: true });
 
-console.log('🎾 Elite Tennis Club - Ultra Animated Website Loaded! 🚀');
+console.log('Garden Tennis Club - Video-led landing page loaded.');
