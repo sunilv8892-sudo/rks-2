@@ -361,6 +361,7 @@ body::before {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
     filter: saturate(1.05) contrast(1.05) brightness(0.6);
     transform: scale(1.03);
 }
@@ -374,31 +375,9 @@ body::before {
     radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.06) 0%, transparent 30%);
 }
 
-/* Mobile poster (shown instead of video until user taps play) */
-.hero-poster {
-    display: none;
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(180deg, rgba(8,22,13,0.30), rgba(8,22,13,0.58));
-}
-
-.hero-play {
-    background: rgba(255,255,255,0.06);
-    border: 2px solid rgba(255,255,255,0.18);
-    color: #fff;
-    font-size: 2rem;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(6px);
-}
+/* poster/play styles retained but inactive if not present */
+.hero-poster { display: none; }
+.hero-play { display: none; }
 
 .hero-bg-animation,
 .hero-shapes,
@@ -1721,9 +1700,9 @@ body.hero-revealed .hero-content {
         border-radius: 18px;
     }
 
-    /* On mobile, hide the heavy video and show the poster until the user explicitly plays */
-    .hero-video { display: none !important; }
-    .hero-poster { display: flex !important; }
+    /* On mobile, ensure video fills and centers vertically (no black bars) */
+    .hero-video { display: block !important; object-position: center center; transform: scale(1.08) !important; }
+    .hero-poster { display: none !important; }
 
     .hero-buttons {
         flex-direction: column;

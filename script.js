@@ -242,16 +242,21 @@ const playBtn = document.querySelector('.hero-play');
 const mobileQuery = window.matchMedia('(max-width: 768px)');
 function setupMobileVideo() {
     if (mobileQuery.matches) {
+        // On mobile, keep the video visible and centered; attempt autoplay (muted)
         if (heroVideo) {
-            try { heroVideo.pause(); } catch (e) {}
-            heroVideo.preload = 'metadata';
-            heroVideo.style.display = 'none';
+            heroVideo.preload = 'auto';
+            heroVideo.style.display = 'block';
+            heroVideo.style.objectPosition = 'center center';
+            heroVideo.style.transform = 'scale(1.08)';
+            const p = heroVideo.play();
+            if (p && p.catch) p.catch(() => {});
         }
-        if (heroPoster) heroPoster.style.display = 'flex';
+        if (heroPoster) heroPoster.style.display = 'none';
     } else {
         if (heroVideo) {
             heroVideo.preload = 'auto';
             heroVideo.style.display = 'block';
+            heroVideo.style.transform = 'scale(1.03)';
         }
         if (heroPoster) heroPoster.style.display = 'none';
     }
@@ -260,18 +265,7 @@ setupMobileVideo();
 if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', setupMobileVideo);
 else mobileQuery.addListener(setupMobileVideo);
 
-if (playBtn) {
-    playBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        revealHero();
-        if (heroPoster) heroPoster.style.display = 'none';
-        if (heroVideo) {
-            heroVideo.style.display = 'block';
-            const p = heroVideo.play();
-            if (p && p.catch) p.catch(() => {});
-        }
-    });
-}
+// remove play button logic; we now autoplay on mobile when possible
 
 // ========== ADVANCED 3D CARD EFFECTS ==========
 document.querySelectorAll('.service-card, .testimonial-card, .feature-item').forEach(card => {
