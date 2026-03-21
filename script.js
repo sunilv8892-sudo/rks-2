@@ -267,6 +267,36 @@ else mobileQuery.addListener(setupMobileVideo);
 
 // remove play button logic; we now autoplay on mobile when possible
 
+// ========== VIDEO ORIENTATION HANDLING (prevent stretching vertical videos) ==========
+function updateVideoOrientationClass() {
+    if (!heroVideo) return;
+    // If metadata already available
+    const applyClass = (isVertical) => {
+        if (isVertical) {
+            heroVideo.classList.add('is-vertical');
+        } else {
+            heroVideo.classList.remove('is-vertical');
+        }
+    };
+
+    if (heroVideo.readyState >= 1) {
+        applyClass(heroVideo.videoHeight > heroVideo.videoWidth);
+    } else {
+        heroVideo.addEventListener('loadedmetadata', () => {
+            applyClass(heroVideo.videoHeight > heroVideo.videoWidth);
+        }, { once: true });
+    }
+
+    // also on resize/orientation change recalc
+    window.addEventListener('resize', () => {
+        if (heroVideo && heroVideo.videoHeight && heroVideo.videoWidth) {
+            applyClass(heroVideo.videoHeight > heroVideo.videoWidth);
+        }
+    });
+}
+
+updateVideoOrientationClass();
+
 // ========== ADVANCED 3D CARD EFFECTS ==========
 document.querySelectorAll('.service-card, .testimonial-card, .feature-item').forEach(card => {
     card.addEventListener('mousemove', (e) => {

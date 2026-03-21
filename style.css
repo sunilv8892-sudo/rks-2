@@ -366,6 +366,22 @@ body::before {
     transform: scale(1.03);
 }
 
+/* When the source is a vertical video, avoid stretching: show full video without distortion
+   and let the shell background fill gaps. JS will add `.is-vertical` to the video element. */
+.hero-video.is-vertical {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    transform: none !important;
+}
+
+/* For horizontal videos ensure cover behavior remains default */
+.hero-video:not(.is-vertical) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .hero-video-overlay {
     position: absolute;
     inset: 0;
